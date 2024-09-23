@@ -1,0 +1,99 @@
+﻿@model IEnumerable<CarPacking.Models.StockOrder>
+@using CarPacking.Models
+@{
+    ApplicationDbContext db = new ApplicationDbContext();
+    ViewBag.Title = "Stock Orders";
+}
+
+<h2 class="text-center mt-4">Stock Orders</h2>
+
+<div class="container mt-5">
+    <table class="table table-bordered table-striped">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">Order ID</th>
+                <th scope="col">Supplier</th>
+                <th scope="col">Products</th>
+                <th scope="col">Total Price</th>
+                <th scope="col">Order Date</th>
+                <th scope="col">Status</th>
+                <th scope="col">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var order in Model)
+            {
+                <tr>
+                    <td>@order.StockOrderId</td>
+                    <td>
+                        @order.Supplier.Name
+                    </td>
+                    <td>
+                        <ul>
+                            @foreach (var orderedProduct in order.OrderedProducts)
+                            {
+                                <li>
+                                    <strong>@orderedProduct.Product.Name</strong><br />
+                                    <small>Price: R @orderedProduct.Product.Price.ToString("0.00")</small><br />
+                                    <small>Quantity: @orderedProduct.Quantity</small>
+                                </li>
+                            }
+                        </ul>
+                    </td>
+
+                    <td>
+                        R @order.OrderedProducts.Sum(op => op.Product.Price * op.Quantity).ToString("0.00")
+                    </td>
+                    <td>@order.OrderDate.ToString("dd-MM-yyyy")</td>
+                    <td>@order.Status</td>
+                    <td>
+                        @if (order.Status == "Received")
+                        {
+                            try
+                            {
+                                int invId = db.Invoices.Where(x => x.StockOrderId == order.StockOrderId).FirstOrDefault().InvoiceId;
+                                @Html.ActionLink("View Invoice", "ViewInvoice", "ConfirmDelivery", new { id = invId }, new { @class = "btn btn-info btn-sm" })
+
+                            }
+                            catch
+                            {
+
+                            }
+                        }
+                        else
+                        {
+
+
+
+                            @Html.ActionLink("Confirm Delivery", "ConfirmDelivery", "ConfirmDelivery", new { orderId = order.StockOrderId }, new { @class = "btn btn-info btn-sm" })
+
+                        }
+                        @Html.ActionLink("View Details", "OrderRequested", new { id = order.StockOrderId }, new { @class = "btn btn-info btn-sm" })
+                        <a href="@Url.Action("DownloadPdf", "StockOrder", new { orderId = order.StockOrderId })" class="btn btn-primary btn-sm">Download PDF</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<!-- Custom Styles -->
+<style>
+    .table th, .table td {
+        vertical-align: middle;
+    }
+
+        .table td ul {
+            list-style-type: none;
+            padding-left: 0;
+            margin: 0;
+        }
+
+            .table td ul li {
+                padding: 2px 0;
+            }
+
+    .table .btn {
+        margin-right: 5px;
+    }
+</style>

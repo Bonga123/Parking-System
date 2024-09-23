@@ -1,0 +1,73 @@
+﻿@{
+    ViewBag.Title = "Report Submitted";
+}
+<style>
+    /* Custom styles for the report submitted page */
+    .report-container {
+        margin-top: 50px;
+        display: flex;
+        justify-content: center;
+    }
+
+    .report-card {
+        max-width: 600px;
+        width: 100%;
+        background-color: #f8f9fa;
+        border-radius: 15px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        padding: 30px;
+        text-align: center;
+    }
+
+        .report-card h2 {
+            color: #007bff;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        .report-card p {
+            font-size: 1.2rem;
+            color: #333;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .report-card .icon-check {
+            font-size: 4rem;
+            color: #28a745;
+            margin-bottom: 20px;
+        }
+
+        .report-card .btn-back {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            font-size: 1.1rem;
+            border-radius: 25px;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+
+            .report-card .btn-back:hover {
+                background-color: #0056b3;
+                text-decoration: none;
+            }
+</style>
+@{
+    ViewBag.Title = "Report Submitted";
+}
+
+<div class="report-container">
+    <div class="report-card">
+        <div class="icon-check">
+            <i class="bi bi-check-circle-fill"></i>
+        </div>
+        <h2>Report Submitted</h2>
+        <p>
+            Thank you for reporting your lost permit. An administrator will review your report and reassign a new permit if necessary. You will receive an email notification once your new permit is issued.
+        </p>
+        <a href="@Url.Action("Index", "Home")" class="btn-back">
+            <i class="bi bi-house-door-fill"></i> Back to Home
+        </a>
+    </div>
+</div>

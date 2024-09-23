@@ -1,0 +1,96 @@
+﻿<!-- File: Views/ParkingSpot/AllocateSpot.cshtml -->
+@model List<CarPacking.Models.ParkingSpot>
+
+@{
+    ViewBag.Title = "Allocate Parking Spot";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .spot-container {
+        max-width: 700px;
+        margin: 50px auto;
+        padding: 20px;
+        background-color: #f9f9f9;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+        .spot-container h2 {
+            text-align: center;
+            color: #343a40;
+        }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+
+    th, td {
+        padding: 12px;
+        text-align: left;
+        border-bottom: 1px solid #dee2e6;
+    }
+
+    th {
+        background-color: #007bff;
+        color: white;
+    }
+
+    td a {
+        display: inline-block;
+        padding: 8px 12px;
+        background-color: #28a745;
+        color: white;
+        text-decoration: none;
+        border-radius: 4px;
+        transition: background-color 0.3s ease-in-out;
+    }
+
+        td a:hover {
+            background-color: #218838;
+        }
+
+    .spot-link {
+        display: inline-block;
+        margin-top: 20px;
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: white;
+        text-decoration: none;
+        border-radius: 4px;
+        transition: background-color 0.3s ease-in-out;
+    }
+
+        .spot-link:hover {
+            background-color: #0056b3;
+        }
+</style>
+
+<div class="spot-container">
+    <h2>Allocate Parking Spot</h2>
+
+    <p>Select an available spot for your permit:</p>
+    <table>
+        <tr>
+            <th>Location</th>
+            <th>Action</th>
+        </tr>
+        @foreach (var spot in Model)
+        {
+            <tr>
+                <td>@spot.Location</td>
+                <td>
+                    @Html.ActionLink("Allocate", "AllocateSpot", new { spotId = spot.ParkingSpotId, permitId = ViewBag.Permit.ParkingPermitId })
+                </td>
+            </tr>
+        }
+    </table>
+
+    @* Conditionally show the link to the allocated spot only if it exists *@
+    @if (ViewBag.AllocatedSpotId != null)
+    {
+        <a class="spot-link" href="@Url.Action("SpotAllocated", "ParkingSpot", new { id = ViewBag.AllocatedSpotId })">View Allocated Spot</a>
+    }
+</div>

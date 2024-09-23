@@ -1,0 +1,61 @@
+﻿@model IEnumerable<CarPacking.Models.Supplier>
+
+@{
+    ViewBag.Title = "List of Suppliers and Products";
+}
+
+<h2 class="text-center mt-5">List of Suppliers and Their Products</h2>
+
+<!-- Add Supplier Button -->
+<div class="text-center mb-4">
+    @Html.ActionLink("Add Supplier", "AddSupplier", "Supplier", new { @class = "btn btn-primary btn-lg" })
+</div>
+
+<div class="row">
+    @foreach (var supplier in Model)
+    {
+        <div class="col-md-6 mb-4">
+            <div class="card border-primary shadow-sm">
+                <div class="card-body">
+                    <h3 class="card-title text-primary d-flex justify-content-between align-items-center">
+                        @supplier.Name
+                        @Html.ActionLink("Add Product", "AddProduct", "Supplier", new { supplierId = supplier.SupplierId }, new { @class = "btn btn-outline-secondary btn-sm" })
+                    </h3>
+                    <p><i class="fas fa-envelope"></i> Email: @supplier.Email</p>
+                    <p><i class="fas fa-map-marker-alt"></i> Address: @supplier.Address</p>
+                    <p><i class="fas fa-phone"></i> Phone: @supplier.PhoneNumber</p>
+
+                    <h4 class="mt-4">Products Supplied:</h4>
+                    @if (supplier.SuppliedProducts != null && supplier.SuppliedProducts.Any())
+                    {
+                        <ul class="list-group">
+                            @foreach (var suppliedProduct in supplier.SuppliedProducts)
+                            {
+                                <li class="list-group-item">
+                                    <strong>@suppliedProduct.Product.Name</strong><br />
+                                    <span>Description: @suppliedProduct.Product.Description</span><br />
+                                    <span>Price: <strong>R @suppliedProduct.Product.Price</strong></span>
+                                </li>
+                            }
+                        </ul>
+                    }
+                    else
+                    {
+                        <p class="text-muted">No products supplied by this supplier.</p>
+                    }
+
+                    <!-- Request Stock Button -->
+                    <div class="text-center mt-3">
+                        @Html.ActionLink("Request Stock", "RequestOrder", "StockOrder", new { supplierId = supplier.SupplierId }, new { @class = "btn btn-success btn-sm" })
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<!-- Custom Styles -->
+<link href="~/assets/css/ListSuppliers.css" rel="stylesheet" />
+
+<!-- FontAwesome CDN for Icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">

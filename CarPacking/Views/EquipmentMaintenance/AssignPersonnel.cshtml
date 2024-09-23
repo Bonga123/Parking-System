@@ -1,0 +1,30 @@
+﻿@model CarPacking.Models.MaintenanceTask
+@{
+    ViewBag.Title = "Assign Personnel";
+}
+
+<h2>Assign Personnel to Maintenance Task</h2>
+
+<p><strong>Task:</strong> @Model.TaskDescription</p>
+<p><strong>Equipment:</strong> @Model.Equipment.Name</p>
+<p><strong>Scheduled Date:</strong> @Model.ScheduledDate.ToShortDateString()</p>
+
+<p>Suggested Personnel:</p>
+<ul>
+    @foreach (var personnel in ViewBag.PersonnelList)
+    {
+        <li>@personnel.PersonnelName (Skill Level: @personnel.SkillLevel)</li>
+    }
+</ul>
+
+@using (Html.BeginForm("AssignPersonnel", "EquipmentMaintenance", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(model => model.MaintenanceTaskId)
+
+    <div class="form-group">
+        <label for="personnelName">Personnel Name</label>
+        <input type="text" id="personnelName" name="personnelName" class="form-control" required />
+    </div>
+    <button type="submit" class="btn btn-primary">Assign Personnel</button>
+}

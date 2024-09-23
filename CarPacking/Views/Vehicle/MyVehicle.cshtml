@@ -1,0 +1,71 @@
+﻿@model CarPacking.Models.Vehicle
+
+@{
+    ViewBag.Title = "Vehicle Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .vehicle-details-container {
+        max-width: 800px;
+        margin: 50px auto;
+        padding: 20px;
+        background-color: #f8f9fa;
+        border-radius: 15px;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        overflow: hidden;
+        text-align: center;
+    }
+
+        .vehicle-details-container img {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            border-bottom: 5px solid #343a40;
+        }
+
+    .vehicle-details-body {
+        padding: 30px;
+    }
+
+    .vehicle-details-title {
+        font-size: 2.5em;
+        color: #343a40;
+        margin-bottom: 20px;
+    }
+
+    .vehicle-details-text {
+        font-size: 1.2em;
+        color: #495057;
+        margin-bottom: 10px;
+    }
+
+    .vehicle-details-button {
+        display: inline-block;
+        margin-top: 20px;
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        font-size: 18px;
+        text-decoration: none;
+        transition: background-color 0.3s ease;
+    }
+
+        .vehicle-details-button:hover {
+            background-color: #0056b3;
+        }
+</style>
+
+<div class="vehicle-details-container">
+    <img src="@(!string.IsNullOrEmpty(Model.PicturePath) ? Model.PicturePath : "/Content/Images/default-vehicle.png")" alt="Vehicle Image">
+    <div class="vehicle-details-body">
+        <h1 class="vehicle-details-title">@Model.Make @Model.Model</h1>
+        <p class="vehicle-details-text">License Plate: @Model.LicensePlate</p>
+        <p class="vehicle-details-text">Make: @Model.Make</p>
+        <p class="vehicle-details-text">Model: @Model.Model</p>
+        <p class="vehicle-details-text">Vehicle ID: @Model.VehicleId</p>
+        <a href="@Url.Action("MyParkingPermit", "ParkingPermit", new {id = Model.VehicleId})" class="vehicle-details-button">View My Permit</a>
+    </div>
+</div>

@@ -1,0 +1,75 @@
+﻿<!-- File: Views/Payment/IssuePayment.cshtml -->
+@model CarPacking.Models.StockOrder
+
+@{
+    ViewBag.Title = "Issue Payment";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .payment-container {
+        max-width: 600px;
+        margin: 50px auto;
+        padding: 20px;
+        background-color: #f0f4f7;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+        .payment-container h2 {
+            text-align: center;
+            color: #343a40;
+        }
+
+    label {
+        font-weight: bold;
+        color: #495057;
+    }
+
+    input[type="text"], input[type="email"] {
+        width: 100%;
+        padding: 10px;
+        margin: 10px 0;
+        border: 1px solid #ced4da;
+        border-radius: 4px;
+        transition: border-color 0.3s ease-in-out;
+    }
+
+        input[type="text"]:focus, input[type="email"]:focus {
+            border-color: #28a745;
+            outline: none;
+        }
+
+    button {
+        display: block;
+        width: 100%;
+        padding: 10px;
+        background-color: #28a745;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color 0.3s ease-in-out;
+    }
+
+        button:hover {
+            background-color: #218838;
+        }
+</style>
+
+<div class="payment-container">
+    <h2>Issue Payment</h2>
+
+    <p>Issue payment to: @Model.SupplierEmail</p>
+    <p>Order Amount: @Model.Quantity x @Model.ItemName</p>
+
+    @using (Html.BeginForm())
+    {
+        <div>
+            <label>Payment Amount:</label>
+            @Html.TextBox("Amount", Model.Quantity * 100 /* Example calculation */)
+        </div>
+        <button type="submit">Pay with PayPal</button>
+    }
+</div>

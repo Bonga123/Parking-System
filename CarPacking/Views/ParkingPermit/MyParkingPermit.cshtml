@@ -1,0 +1,100 @@
+﻿@model CarPacking.Models.ParkingPermit
+
+@{
+    ViewBag.Title = "Parking Permit Reissued";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
+
+<style>
+    .reissue-container {
+        max-width: 600px;
+        margin: 50px auto;
+        padding: 20px;
+        background-color: #fff3cd;
+        border-radius: 8px;
+        border: 1px solid #ffeeba;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        text-align: center;
+    }
+
+        .reissue-container h2 {
+            color: #856404;
+        }
+
+        .reissue-container ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .reissue-container li {
+            font-size: 18px;
+            color: #856404;
+            margin: 10px 0;
+        }
+
+        .reissue-container img {
+            margin-top: 20px;
+            max-width: 200px;
+        }
+
+        .reissue-container p {
+            font-size: 18px;
+            color: #856404;
+            margin: 20px 0;
+        }
+
+    .btn-report-lost, .btn-download-pdf {
+        padding: 10px 20px;
+        font-size: 16px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        margin-top: 20px;
+        color: white;
+        text-decoration: none;
+        display: inline-block;
+    }
+
+    .btn-report-lost {
+        background-color: #dc3545;
+        border: none;
+    }
+
+        .btn-report-lost:hover {
+            background-color: #c82333;
+        }
+
+    .btn-download-pdf {
+        background-color: #28a745;
+        border: none;
+    }
+
+        .btn-download-pdf:hover {
+            background-color: #218838;
+        }
+</style>
+
+<div class="reissue-container">
+    <h2>Parking Permit</h2>
+
+    <p>Details:</p>
+    <ul>
+        <li>Permit Type: @Model.PermitType</li>
+        <li>Price: @Model.Price Rands</li>
+    </ul>
+
+    <h3>QR Code:</h3>
+    <img src="@Model.QRCode" alt="QR Code" />
+
+    <!-- Report Lost Permit Button -->
+    <form action="@Url.Action("ReportLost", "LostPermit")" method="post">
+        @Html.AntiForgeryToken()
+        <input type="hidden" name="permitId" value="@Model.ParkingPermitId" />
+        <button type="submit" class="btn-report-lost">Report Lost Permit</button>
+    </form>
+
+    <!-- Download Permit PDF Button -->
+    <a href="@Url.Action("DownloadPermitPdf", "ParkingPermit", new { permitId = @Model.ParkingPermitId })" class="btn-download-pdf">Download Permit PDF</a>
+</div>

@@ -1,0 +1,73 @@
+﻿<!-- File: Views/Personnel/AssignTask.cshtml -->
+@model CarPacking.Models.MaintenanceTask
+
+@{
+    ViewBag.Title = "Assign Maintenance Task";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .assign-container {
+        max-width: 600px;
+        margin: 50px auto;
+        padding: 20px;
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+        .assign-container h2 {
+            text-align: center;
+            color: #343a40;
+        }
+
+    label {
+        font-weight: bold;
+        color: #495057;
+    }
+
+    select {
+        width: 100%;
+        padding: 10px;
+        margin: 10px 0;
+        border: 1px solid #ced4da;
+        border-radius: 4px;
+        transition: border-color 0.3s ease-in-out;
+    }
+
+        select:focus {
+            border-color: #28a745;
+            outline: none;
+        }
+
+    button {
+        display: block;
+        width: 100%;
+        padding: 10px;
+        background-color: #28a745;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color 0.3s ease-in-out;
+    }
+
+        button:hover {
+            background-color: #218838;
+        }
+</style>
+
+<div class="assign-container">
+    <h2>Assign Maintenance Task</h2>
+
+    <p>Assign this task to:</p>
+
+    @using (Html.BeginForm())
+    {
+        <div>
+            @Html.DropDownList("personnelId", ViewBag.Personnel as SelectList, "Select Personnel")
+        </div>
+        <button type="submit">Assign Task</button>
+    }
+</div>

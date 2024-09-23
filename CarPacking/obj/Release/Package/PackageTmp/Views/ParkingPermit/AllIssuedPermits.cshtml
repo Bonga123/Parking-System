@@ -1,0 +1,128 @@
+﻿@model IEnumerable<CarPacking.Models.ParkingPermit>
+
+@{
+    ViewBag.Title = "List of Issued Permits";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
+
+<style>
+    .permits-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+        font-size: 1em;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+        .permits-table th, .permits-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .permits-table th {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .permits-table tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        .permits-table a {
+            color: #007bff;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+            .permits-table a:hover {
+                color: #0056b3;
+            }
+
+    .permits-container {
+        margin: 50px auto;
+        max-width: 1000px;
+        padding: 20px;
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+
+    .permits-title {
+        text-align: center;
+        margin-bottom: 20px;
+        font-size: 2em;
+        color: #343a40;
+    }
+
+    .qr-thumbnail {
+        width: 50px;
+        height: 50px;
+        cursor: pointer;
+    }
+</style>
+
+<div class="permits-container">
+    <h2 class="permits-title">Issued Parking Permits</h2>
+    <table class="permits-table">
+        <thead>
+            <tr>
+                <th>Permit ID</th>
+                <th>Vehicle</th>
+                <th>Permit Type</th>
+                <th>Price (Rands)</th>
+                <th>Issued Date</th>
+                <th>QR Code</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var permit in Model)
+            {
+                <tr>
+                    <td>@permit.ParkingPermitId</td>
+                    <td>@permit.Vehicle.Make @permit.Vehicle.Model</td>
+                    <td>@permit.PermitType</td>
+                    <td>@permit.Price</td>
+                    <td>@permit.IssuedDate.ToString("dd-MM-yyyy")</td>
+                    <td>
+                        @if (!string.IsNullOrEmpty(permit.QRCode))
+                        {
+                            <img src="@permit.QRCode" alt="QR Code" class="qr-thumbnail" data-toggle="modal" data-target="#qrModal" data-imgsrc="@permit.QRCode" />
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="qrModal" tabindex="-1" role="dialog" aria-labelledby="qrModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="qrModalLabel">QR Code</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body text-center">
+                <img id="qrModalImage" src="" alt="QR Code" style="max-width: 100%; height: auto;" />
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    $('#qrModal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget); // Button that triggered the modal
+        var imgSrc = button.data('imgsrc'); // Extract info from data-* attributes
+        var modal = $(this);
+        modal.find('.modal-body #qrModalImage').attr('src', imgSrc);
+    });
+</script>

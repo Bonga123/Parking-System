@@ -1,0 +1,84 @@
+﻿@model IEnumerable<CarPacking.Models.Personnel>
+
+@{
+    ViewBag.Title = "Personnel";
+}
+
+<div class="container mt-5">
+    <h1 class="text-center mb-5">Our Personnel</h1>
+    <div class="row justify-content-center">
+        @foreach (var item in Model)
+        {
+            <div class="col-md-6 col-lg-4 mb-4 d-flex justify-content-center">
+                <div class="card h-100 shadow-lg" style="border-radius: 15px; max-width: 350px; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                    <div class="d-flex flex-column align-items-center p-3" style="background: linear-gradient(145deg, #ffffff, #f1f1f1); border-radius: 15px;">
+                        <div class="image mb-3">
+                            <img src="~/assets/images/@item.Picture" class="rounded border" style="width: 100%; height: auto; object-fit: cover; border-radius: 15px 15px 0 0;">
+                        </div>
+                        <div class="text-center w-100 p-3">
+                            <h4 class="mb-1 font-weight-bold">@item.Name @item.Surname</h4>
+                            <span class="text-muted">@item.Email</span>
+
+                            <div class="button mt-4 d-flex justify-content-center w-100">
+                                <button class="btn btn-sm btn-outline-primary w-50 mr-2"
+                                        onclick="location.href='@Url.Action("MyProfile", "Drivers", new {email = item.Email })'">
+                                    <i class="fa fa-info-circle"></i> Profile
+                                </button>
+                                <button class="btn btn-sm btn-primary w-50"
+                                        onclick="openAssignModal(@item.PersonnelId, '@item.Name', '@item.Surname')">
+                                    <i class="fa fa-check-circle"></i> Assign
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<div class="modal fade" id="assignModal" tabindex="-1" role="dialog" aria-labelledby="assignModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="assignModalLabel">Assign Personnel</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to assign <span id="personnelName"></span> to this task?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="confirmAssign">Assign</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    let assignPersonnelId;
+
+    function openAssignModal(id, name, surname) {
+        assignPersonnelId = id;
+        document.getElementById('personnelName').textContent = name + ' ' + surname;
+        $('#assignModal').modal('show');
+    }
+
+    document.getElementById('confirmAssign').addEventListener('click', function () {
+        window.location.href = '@Url.Action("Create", "DriverAssignments")/' + assignPersonnelId;
+    });
+
+    // Add hover effect on card
+    document.querySelectorAll('.card').forEach(card => {
+        card.addEventListener('mouseenter', () => {
+            card.style.transform = 'scale(1.05)';
+            card.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.2)';
+        });
+        card.addEventListener('mouseleave', () => {
+            card.style.transform = 'scale(1)';
+            card.style.boxShadow = '0 2px 4px rgba(0, 0, 0, 0.1)';
+        });
+    });
+</script>

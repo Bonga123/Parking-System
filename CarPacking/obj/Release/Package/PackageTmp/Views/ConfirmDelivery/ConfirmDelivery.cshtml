@@ -1,0 +1,185 @@
+﻿@model CarPacking.Models.Delivery
+
+@{
+    ViewBag.Title = "Confirm Delivery";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2 class="text-center mt-4">Confirm Delivery</h2>
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["Error"]
+    </div>
+}
+
+@using (Html.BeginForm("ConfirmDelivery", "ConfirmDelivery", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(x => x.StockOrderId)
+
+    <div class="delivery-container">
+        <div class="table-responsive">
+            <table class="table table-hover table-bordered">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Product</th>
+                        <th>Ordered Quantity</th>
+                        <th>Delivered Quantity</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (int i = 0; i < Model.DeliveryItems.Count; i++)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(m => m.DeliveryItems[i].OrderedProduct.Product.Name)
+                                @Html.HiddenFor(m => m.DeliveryItems[i].OrderedProduct.Product.ProductId)
+                                @Html.HiddenFor(m => m.DeliveryItems[i].OrderedProduct.OrderedProductId)
+                            </td>
+                            <td>@Html.DisplayFor(m => m.DeliveryItems[i].OrderedProduct.Quantity)</td>
+                            <td>
+                                @Html.TextBoxFor(m => m.DeliveryItems[i].QuantityDelivered, new { @class = "form-control", type = "number", min = "0", max = Model.DeliveryItems[i].OrderedProduct.Quantity })
+                                @Html.HiddenFor(m => m.DeliveryItems[i].OrderedProductId)
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Signature Section at the End -->
+        <div class="signature-section">
+            <div class="form-group">
+                <label>Deliverer Signature</label>
+                <div id="delivererSignatureContainer" style="position: relative;">
+                    <canvas id="delivererSignaturePad" class="signature-pad" width="500" height="200"></canvas>
+                </div>
+                <button type="button" id="clearDelivererSignature" class="btn btn-warning mt-2">Clear Deliverer Signature</button>
+                <input type="hidden" id="delivererSignatureData" name="DelivererSignature" value="" class="form-control">
+            </div>
+
+            <div class="form-group">
+                <label>Receiver Signature</label>
+                <div id="receiverSignatureContainer" style="position: relative;">
+                    <canvas id="receiverSignaturePad" class="signature-pad" width="500" height="200"></canvas>
+                </div>
+                <button type="button" id="clearReceiverSignature" class="btn btn-warning mt-2">Clear Receiver Signature</button>
+                <input type="hidden" id="receiverSignatureData" name="ReceiverSignature" value="" class="form-control">
+            </div>
+
+            <button type="submit" class="btn btn-success btn-block" id="saveBtn">Confirm Delivery</button>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/signature_pad/1.5.3/signature_pad.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            // Initialize the signature pads
+            var delivererCanvas = document.getElementById('delivererSignaturePad');
+            var receiverCanvas = document.getElementById('receiverSignaturePad');
+
+            var delivererSignaturePad = new SignaturePad(delivererCanvas);
+            var receiverSignaturePad = new SignaturePad(receiverCanvas);
+
+            // Ensure the canvas resizes correctly
+            function resizeCanvas(canvas, signaturePad) {
+                const ratio = Math.max(window.devicePixelRatio || 1, 1);
+                canvas.width = canvas.offsetWidth * ratio;
+                canvas.height = canvas.offsetHeight * ratio;
+                canvas.getContext("2d").scale(ratio, ratio);
+                signaturePad.clear(); // otherwise isEmpty() might return incorrect value
+            }
+
+            // Resize canvases to ensure proper drawing positions
+            resizeCanvas(delivererCanvas, delivererSignaturePad);
+            resizeCanvas(receiverCanvas, receiverSignaturePad);
+
+            window.addEventListener('resize', function () {
+                resizeCanvas(delivererCanvas, delivererSignaturePad);
+                resizeCanvas(receiverCanvas, receiverSignaturePad);
+            });
+
+            // Handle the save button click event
+            $('#saveBtn').click(function (e) {
+                // Get the signature data URL and set it as a hidden field value
+                var delivererSignatureData = delivererSignaturePad.toDataURL('image/png').replace(/^data:image\/(png|jpg);base64,/, "");
+                var receiverSignatureData = receiverSignaturePad.toDataURL('image/png').replace(/^data:image\/(png|jpg);base64,/, "");
+
+                $('#delivererSignatureData').val(delivererSignatureData);
+                $('#receiverSignatureData').val(receiverSignatureData);
+
+                // Validate that both signatures are provided
+                if (delivererSignaturePad.isEmpty() || receiverSignaturePad.isEmpty()) {
+                    alert('Please provide both signatures.');
+                    e.preventDefault();
+                }
+            });
+
+            // Clear buttons functionality
+            $('#clearDelivererSignature').click(function () {
+                delivererSignaturePad.clear();
+                $('#delivererSignatureData').val('');
+            });
+
+            $('#clearReceiverSignature').click(function () {
+                receiverSignaturePad.clear();
+                $('#receiverSignatureData').val('');
+            });
+        });
+    </script>
+}
+
+<style>
+    .delivery-container {
+        background-color: #f7f7f7;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        margin-top: 20px;
+    }
+
+    .table-hover tbody tr:hover {
+        background-color: #f1f1f1;
+    }
+
+    .signature-section {
+        margin-top: 40px;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        border: 1px solid #ddd;
+    }
+
+    .signature-pad {
+        border: 2px dashed #007bff;
+        border-radius: 10px;
+        background-color: #fff;
+        width: 100%;
+        height: 200px;
+        margin-top: 10px;
+        transition: background-color 0.3s ease;
+    }
+
+        .signature-pad:hover {
+            background-color: #f9f9f9;
+        }
+
+    .btn-warning {
+        color: #fff;
+        background-color: #ffc107;
+        border-color: #ffc107;
+        margin-top: 10px;
+    }
+
+    .btn-success {
+        background-color: #28a745;
+        border-color: #28a745;
+        margin-top: 20px;
+        width: 100%;
+    }
+</style>

@@ -1,0 +1,76 @@
+﻿<!-- File: Views/Maintenance/Schedule.cshtml -->
+@model CarPacking.Models.MaintenanceTask
+
+@{
+    ViewBag.Title = "Schedule Equipment Maintenance";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .schedule-container {
+        max-width: 600px;
+        margin: 50px auto;
+        padding: 20px;
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+        .schedule-container h2 {
+            text-align: center;
+            color: #343a40;
+        }
+
+    label {
+        font-weight: bold;
+        color: #495057;
+    }
+
+    input[type="text"], input[type="date"] {
+        width: 100%;
+        padding: 10px;
+        margin: 10px 0;
+        border: 1px solid #ced4da;
+        border-radius: 4px;
+        transition: border-color 0.3s ease-in-out;
+    }
+
+        input[type="text"]:focus, input[type="date"]:focus {
+            border-color: #17a2b8;
+            outline: none;
+        }
+
+    button {
+        display: block;
+        width: 100%;
+        padding: 10px;
+        background-color: #17a2b8;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color 0.3s ease-in-out;
+    }
+
+        button:hover {
+            background-color: #138496;
+        }
+</style>
+
+<div class="schedule-container">
+    <h2>Schedule Equipment Maintenance</h2>
+
+    @using (Html.BeginForm())
+    {
+        <div>
+            <label>Equipment Name:</label>
+            @Html.TextBoxFor(m => m.EquipmentName)
+        </div>
+        <div>
+            <label>Scheduled Date:</label>
+            @Html.TextBoxFor(m => m.ScheduledDate)
+        </div>
+        <button type="submit">Schedule Maintenance</button>
+    }
+</div>

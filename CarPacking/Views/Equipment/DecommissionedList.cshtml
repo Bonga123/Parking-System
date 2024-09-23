@@ -1,0 +1,63 @@
+﻿<!-- File: Views/Equipment/DecommissionedList.cshtml -->
+@model List<CarPacking.Models.Equipment>
+
+@{
+    ViewBag.Title = "Decommissioned Equipment";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .decommissioned-container {
+        max-width: 800px;
+        margin: 50px auto;
+        padding: 20px;
+        background-color: #f9f9f9;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+        .decommissioned-container h2 {
+            text-align: center;
+            color: #343a40;
+        }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+
+    th, td {
+        padding: 12px;
+        text-align: left;
+        border-bottom: 1px solid #dee2e6;
+    }
+
+    th {
+        background-color: #6c757d;
+        color: white;
+    }
+
+    td {
+        font-size: 16px;
+        color: #495057;
+    }
+</style>
+
+<div class="decommissioned-container">
+    <h2>Decommissioned Equipment</h2>
+
+    <table>
+        <tr>
+            <th>Equipment Name</th>
+            <th>Date Decommissioned</th>
+        </tr>
+        @foreach (var equipment in Model)
+        {
+            <tr>
+                <td>@equipment.Name</td>
+                <td>@equipment.DateDecommissioned?.ToString("dd-MM-yyyy")</td>
+            </tr>
+        }
+    </table>
+</div>

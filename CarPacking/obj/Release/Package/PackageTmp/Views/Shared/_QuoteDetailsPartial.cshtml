@@ -1,0 +1,33 @@
+﻿@model CarPacking.Models.Quote
+
+@if (Model.QuoteItems != null && Model.QuoteItems.Any())
+{
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Quantity</th>
+                <th>Unit Price</th>
+                <th>Total Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.QuoteItems)
+            {
+                var productName = item?.Product?.Name ?? "Unknown Product";
+                <tr>
+                    <td>@productName</td>
+                    <td>@item.Quantity</td>
+                    <td>@item.UnitPrice.ToString("R0.00")</td>
+                    @{decimal tot = item.Quantity * item.UnitPrice; }
+                    <td>@tot.ToString("R0.00")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No items available for this quote.</p>
+}
+

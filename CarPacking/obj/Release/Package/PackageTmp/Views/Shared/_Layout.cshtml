@@ -1,0 +1,479 @@
+﻿@*<!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>@ViewBag.Title - My ASP.NET Application</title>
+        @Styles.Render("~/Content/css")
+        @Scripts.Render("~/bundles/modernizr")
+
+    </head>
+    <body>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark">
+            <div class="container">
+                @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" title="Toggle navigation" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li>@Html.ActionLink("Home", "Index", "Home", new { area = "" }, new { @class = "nav-link" })</li>
+                        <li>@Html.ActionLink("About", "About", "Home", new { area = "" }, new { @class = "nav-link" })</li>
+                        <li>@Html.ActionLink("Contact", "Contact", "Home", new { area = "" }, new { @class = "nav-link" })</li>
+                    </ul>
+                     @Html.Partial("_LoginPartial")
+                </div>
+            </div>
+        </nav>
+        <div class="container body-content">
+            @RenderBody()
+            <hr />
+            <footer>
+                <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+            </footer>
+        </div>
+
+        @Scripts.Render("~/bundles/jquery")
+        @Scripts.Render("~/bundles/bootstrap")
+        @RenderSection("scripts", required: false)
+    </body>
+    </html>*@
+@using CarPacking.Models
+@{
+    ApplicationDbContext db = new ApplicationDbContext();
+}
+<!DOCTYPE html>
+<html lang="zxx">
+
+<head>
+    <style>
+        #toggle {
+            color: red; /* This changes the color of the text or the icon inside the toggle link */
+        }
+
+            #toggle span {
+                display: block;
+                width: 30px; /* Adjust the width as needed */
+                height: 3px; /* Adjust the height as needed */
+                background-color: red; /* This makes the span element (toggle icon) red */
+                margin: 5px 0; /* Adds space between bars if there are multiple spans */
+                transition: background-color 0.3s ease; /* Smooth color transition */
+            }
+
+            /* Optional: If you want to change the background color on hover */
+            #toggle:hover span {
+                background-color: darkred;
+            }
+
+        .breadcrumb-container {
+            background-image: url('/assets/images/2.jpg');
+            background-size: cover;
+            background-position: center;
+            padding: 60px 60px; /* Padding to adjust height */
+            border-radius: 5px;
+            margin-bottom: 20px;
+            display: flex; /* Align items in a row */
+            align-items: center; /* Vertically center the breadcrumb content */
+        }
+
+        .breadcrumb {
+            margin: 0; /* Remove default margin */
+            padding: 0;
+            display: flex; /* Ensure breadcrumb items are aligned in a row */
+            align-items: center;
+        }
+
+            .breadcrumb a {
+                color: #fff;
+                text-decoration: none;
+                font-size: 1.1rem;
+                font-weight: bold;
+                background-color: rgba(0, 0, 0, 0.5);
+                padding: 5px 10px;
+                border-radius: 3px;
+                margin-right: 10px; /* Space between breadcrumb items */
+            }
+
+        .breadcrumb-item.active {
+            color: #ddd;
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 5px 10px;
+            border-radius: 3px;
+        }
+
+        .breadcrumb-item + .breadcrumb-item::before {
+            content: '>'; /* Add separator between breadcrumb items */
+            margin-right: 10px;
+            color: #fff;
+            font-weight: normal;
+            background: none;
+            padding: 0;
+        }
+    </style>
+
+    <title>Car Services Auto Mobile Category Bootstrap Responsive Web Template | Home :: W3layouts</title>
+    <!-- Meta tag Keywords -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8" />
+    <meta name="keywords" content="Car Services Responsive web template, Bootstrap Web Templates, Flat Web Templates, Android Compatible web template, Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyEricsson, Motorola web design" />
+    <script>
+        addEventListener("load", function () {
+            setTimeout(hideURLbar, 0);
+        }, false);
+
+        function hideURLbar() {
+            window.scrollTo(0, 1);
+        }
+    </script>
+    <!--// Meta tag Keywords -->
+    <!-- Custom-Files -->
+    <link rel="stylesheet" href="~/assets/css/bootstrap.css">
+    <!-- Bootstrap-Core-CSS -->
+    <link href="~/assets/css/JiSlider.css" rel="stylesheet">
+    <!-- //banner-slider -->
+    <link rel="stylesheet" href="~/assets/css/smoothbox.css" type='text/css' media="all" />
+    <!-- gallery lightbox -->
+    <link rel="stylesheet" href="~/assets/css/style.css" type="text/css" media="all" />
+    <!-- Style-CSS -->
+    <link rel="stylesheet" href="~/assets/css/fontawesome-all.css">
+    <!-- Font-Awesome-Icons-CSS -->
+    <!-- //Custom-Files -->
+    <!-- Web-Fonts -->
+    <link href="//fonts.googleapis.com/css?family=Poppins:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i&amp;subset=latin-ext"
+          rel="stylesheet">
+    <link href="//fonts.googleapis.com/css?family=Dr+Sugiyama&amp;subset=latin-ext" rel="stylesheet">
+    <!-- //Web-Fonts -->
+
+</head>
+
+<body>
+    <!-- banner & header section -->
+    <div class="main">
+        <!-- header -->
+        <header>
+            <div class="container-fluid">
+                <div class="row header-w3ls-top pt-lg-5 pt-md-4 pt-3 px-lg-5 px-3">
+                    <div class="col-xl-10 col-md-9 col-sm-8 col-6 logo">
+                        <h1>
+                            <a href="@Url.Action("Index","Home")">
+                                <span>C</span>ar
+                                <span>P</span>arking
+                            </a>
+                        </h1>
+                    </div>
+                    <div class="col-xl-2 col-md-3 col-sm-4 col-6 menu-agile text-center">
+
+                        <a href="#menu" id="toggle">
+                            <span></span>
+                        </a>
+                        @if (Request.IsAuthenticated)
+                        {
+                            if (User.IsInRole("Admin"))
+                            {
+                                <div id="menu" class="menustyles">
+                                    <ul class="list-unstyled">
+                                        <li>
+                                            <a href="@Url.Action("Index","Home")">Home</a>
+                                        </li>
+                                        <li>
+                                            <a href="@Url.Action("Create","Users")">Add User</a>
+                                        </li>
+                                        <li>
+                                            <a href="@Url.Action("ListVehicles","Vehicle")">Vehicles</a>
+                                        </li>
+
+                                        <li>
+                                            <a href="@Url.Action("AllIssuedPermits","ParkingPermit")">Parking Permits</a>
+                                        </li>
+
+                                        <li>
+                                            <a href="@Url.Action("ViewLostReports","Admin")">Lost Permits</a>
+                                        </li>
+                                        <li>
+                                            <a href="@Url.Action("ViewRequests","Admin")">Stock Requests</a>
+                                        </li>
+                                        <li>
+                                            <a href="@Url.Action("ViewQuotes","Admin")">Quotes</a>
+                                        </li>
+
+                                        <li>
+                                            <a href="@Url.Action("ListSuppliers","Supplier")">Suppliers</a>
+                                        </li>
+                                        <li>
+                                            <a href="@Url.Action("Index","StockOrder")">StockOrders</a>
+                                        </li>
+                                        <li>
+                                            <a href="@Url.Action("ScheduleMaintenance","EquipmentMaintenance")">Schedulec Maintenance</a>
+                                        </li>
+
+                                        @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+                                        {
+                                            @Html.AntiForgeryToken()
+                                            <li>
+                                                <a href="javascript:document.getElementById('logoutForm').submit()">Logout</a>
+                                            </li>
+                                        }
+
+                                    </ul>
+                                </div>
+                            }
+                            else if (User.IsInRole("Personnel"))
+                            {
+                                <div id="menu" class="menustyles">
+                                    <ul class="list-unstyled">
+                                        <li>
+                                            <a href="@Url.Action("Index","Home")">Home</a>
+                                        </li>
+                                        <li>
+                                            <a href="@Url.Action("MyProfile","Personnel")">Profile</a>
+                                        </li><li>
+                                            <a href="@Url.Action("RequestStockOrder","Personnel")">Request Stock</a>
+                                        </li>
+
+
+                                        @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+                                        {
+                                            @Html.AntiForgeryToken()
+                                            <li>
+                                                <a href="javascript:document.getElementById('logoutForm').submit()">Logout</a>
+                                            </li>
+                                        }
+
+                                    </ul>
+                                </div>
+                            }
+                            else if (User.IsInRole("Supervisor"))
+                            {
+                                <div id="menu" class="menustyles">
+                                    <ul class="list-unstyled">
+                                        <li>
+                                            <a href="@Url.Action("Index","Home")">Home</a>
+                                        </li>
+                                        <li>
+                                            <a href="@Url.Action("RequestStockOrder","Personnel")">Request Stock</a>
+                                        </li>
+
+
+                                        @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+                                        {
+                                            @Html.AntiForgeryToken()
+                                            <li>
+                                                <a href="javascript:document.getElementById('logoutForm').submit()">Logout</a>
+                                            </li>
+                                        }
+
+                                    </ul>
+                                </div>
+                            }
+                            else if (User.IsInRole("Supplier"))
+                            {
+                                <div id="menu" class="menustyles">
+                                    <ul class="list-unstyled">
+                                        <li>
+                                            <a href="@Url.Action("Index","Home")">Home</a>
+                                        </li>
+                                        @{ var supplier = db.Suppliers.Where(x => x.Email == User.Identity.Name).FirstOrDefault();}
+                                        @if (supplier != null)
+                                        {
+                                            <li>
+                                                <a href="@Url.Action("ViewQuoteRequests", "Supplier", new {supplierId =supplier.SupplierId })">Quote Requests</a>
+                                            </li>
+                                        }
+
+
+
+                                        @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+                                        {
+                                            @Html.AntiForgeryToken()
+                                            <li>
+                                                <a href="javascript:document.getElementById('logoutForm').submit()">Logout</a>
+                                            </li>
+                                        }
+
+                                    </ul>
+                                </div>
+                            }
+                            else
+                            {
+                                <div id="menu" class="menustyles">
+                                    <ul class="list-unstyled">
+                                        <li>
+                                            <a href="@Url.Action("Index","Home")">Home</a>
+                                        </li>
+                                        @{ var vehicle = db.Vehicles.Where(x => x.StudEmail == User.Identity.Name).FirstOrDefault();}
+                                        @if (vehicle == null)
+                                        {
+                                            <li>
+                                                <a href="@Url.Action("CreateVehicle","Vehicle")">Register Vehicle</a>
+                                            </li>
+                                        }
+                                        else
+                                        {
+                                            <li>
+                                                <a href="@Url.Action("MyVehicle","Vehicle")">My Vehicle</a>
+                                            </li>
+                                        }
+                                        @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+                                        {
+                                            @Html.AntiForgeryToken()
+                                            <li>
+
+
+                                                <a href="javascript:document.getElementById('logoutForm').submit()">Logout</a>
+
+
+                                            </li>
+                                        }
+                                    </ul>
+                                </div>
+                            }
+                        }
+                        else
+                        {
+                            <div id="menu" class="menustyles">
+                                <ul class="list-unstyled">
+                                    <li>
+                                        <a href="@Url.Action("Index","Home")">Home</a>
+                                    </li>
+                                    <li>
+                                        <a href="@Url.Action("Login","Account")">Login</a>
+                                    </li>
+
+                                    <li>
+                                        <a href="@Url.Action("Register","Account")">Register</a>
+                                    </li>
+                                </ul>
+                            </div>
+
+                        }
+
+
+
+                    </div>
+                </div>
+            </div>
+        </header>
+        <!-- //header -->
+        @if (ViewBag.Title != "Home Page")
+        {
+            <main aria-labelledby="title">
+                <div class="breadcrumb-container">
+                    <nav aria-label="breadcrumb" style="padding-left:600px">
+                        <ol class="breadcrumb" style="display:none">
+                            <li class="breadcrumb-item"><a href="@Url.Action("Index","Home")">Home</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">@ViewBag.Title</li>
+                        </ol>
+                    </nav>
+                </div>
+                @RenderBody()
+            </main>
+
+        }
+        else
+        {
+            @RenderBody()
+        }
+        <!-- footer -->
+        <div class="footer-bot py-5 text-center">
+            <div class="container">
+                <div class="logo2">
+                    <h2>
+                        <a href="index.html">
+                            <span>C</span>ar
+                            <span>P</span>arking
+                        </a>
+                    </h2>
+                </div>
+                <!-- social icons -->
+                <div class="agileinfo_social_icons my-4">
+                    <ul class="agileits_social_list list-unstyled">
+                        <li>
+                            <a href="#" class="w3_agile_facebook">
+                                <i class="fab fa-facebook-f"></i>
+                            </a>
+                        </li>
+                        <li class="mx-2">
+                            <a href="#" class="agile_twitter">
+                                <i class="fab fa-twitter"></i>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="w3_agile_dribble">
+                                <i class="fab fa-dribbble"></i>
+                            </a>
+                        </li>
+                        <li class="ml-2">
+                            <a href="#" class="w3_agile_google">
+                                <i class="fab fa-google-plus-g"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <!-- social icons -->
+                <!-- copyright -->
+                <p class="copyright-w3ls">
+                    &copy; 2018 Car Services. All Rights Reserved | Design by
+                    <a href="http://w3layouts.com/"> W3layouts</a>
+                </p>
+                <!-- //copyright -->
+            </div>
+        </div>
+        <!-- //footer -->
+        <!-- Js files -->
+        <!-- JavaScript -->
+        <script src="~/assets/js/jquery-2.2.3.min.js"></script>
+        <!-- <script src="~/assets/js/jquery-1.11.3.min.js"></script> -->
+        <!-- Default-JavaScript-File -->
+        <script src="~/assets/js/bootstrap.js"></script>
+        <!-- Necessary-JavaScript-File-For-Bootstrap -->
+        <!--banner-slider-->
+        <script src="~/assets/js/JiSlider.js"></script>
+        <script>
+            $(window).load(function () {
+                $('#JiSlider').JiSlider({
+                    color: '#fff',
+                    start: 3,
+                    reverse: true
+                }).addClass('ff')
+            })
+        </script>
+        <!-- //banner-slider -->
+        <!-- smooth scrolling -->
+        <script src="~/assets/js/SmoothScroll.min.js"></script>
+        <!-- //smooth scrolling -->
+        <!-- move-top -->
+        <script src="~/assets/js/move-top.js"></script>
+        <!-- easing -->
+        <script src="~/assets/js/easing.js"></script>
+        <!--  necessary snippets for few javascript files -->
+        <script src="~/assets/js/car_services.js"></script>
+        <!-- banner text -->
+        <script src="~/assets/js/text.js"></script>
+        <!-- menu -->
+        <script src="~/assets/js/menu.js"></script>
+        <!-- lightbox -->
+        <script src="~/assets/js/smoothbox.jquery2.js"></script>
+
+        <!-- testimonials -->
+        <!-- required-js-files-->
+        <link href="~/assets/css/owl.carousel.css" rel="stylesheet">
+        <script src="~/assets/js/owl.carousel.js"></script>
+        <script>
+            $(document).ready(function () {
+                $("#owl-demo").owlCarousel({
+                    items: 1,
+                    lazyLoad: true,
+                    autoPlay: false,
+                    navigation: true,
+                    navigationText: true,
+                    pagination: true,
+                });
+            });
+        </script>
+        <!-- //required-js-files-->
+        <!-- //Js files -->
+        @RenderSection("scripts", required: false)
+</body>
+
+</html>

@@ -1,0 +1,82 @@
+﻿@model CarPacking.Models.StockOrder
+
+@{
+    ViewBag.Title = "Stock Order Requested";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .requested-container {
+        max-width: 700px;
+        margin: 50px auto;
+        padding: 30px;
+        background-color: #d1ecf1;
+        border-radius: 8px;
+        border: 1px solid #bee5eb;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        text-align: center;
+    }
+
+        .requested-container h2 {
+            color: #0c5460;
+        }
+
+        .requested-container p {
+            font-size: 18px;
+            color: #0c5460;
+        }
+
+        .requested-container ul {
+            list-style-type: none;
+            padding-left: 0;
+            text-align: left;
+            color: #0c5460;
+            font-size: 16px;
+        }
+
+            .requested-container ul li {
+                margin-bottom: 10px;
+            }
+
+        .requested-container button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #138496;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease-in-out;
+        }
+
+            .requested-container button:hover {
+                background-color: #0c5460;
+            }
+</style>
+
+<div class="requested-container">
+    <h2>Stock Order Requested</h2>
+    <p>Your stock order has been requested and a PDF document has been sent to the supplier.</p>
+
+    <h3>Order Details</h3>
+    <ul>
+        @foreach (var orderedProduct in Model.OrderedProducts)
+        {
+            <li><strong>Product:</strong> @orderedProduct.Product.Name</li>
+            <li><strong>Price:</strong> R @orderedProduct.Product.Price.ToString("0.00")</li>
+            <li><strong>Quantity:</strong> @orderedProduct.Quantity</li>
+            <li><strong>Total:</strong> R @(orderedProduct.Product.Price * orderedProduct.Quantity)</li>
+            <li><strong>Supplier:</strong> @Model.Supplier.Name</li>
+            <li><strong>Supplier Email:</strong> @Model.Supplier.Email</li>
+            <hr />
+        }
+    </ul>
+
+    <h4>Total Order Cost: R @Model.OrderedProducts.Sum(op => op.Product.Price * op.Quantity).ToString("0.00")</h4>
+
+    <button onclick="location.href='@Url.Action("Index", "Home")'">Go to Dashboard</button>
+
+    <br />
+    <a href="@Url.Action("DownloadPdf", "StockOrder", new { orderId = Model.StockOrderId })" class="btn btn-info mt-3">Download PDF</a>
+</div>

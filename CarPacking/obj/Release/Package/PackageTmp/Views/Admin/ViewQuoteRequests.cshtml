@@ -1,0 +1,93 @@
+﻿@model IEnumerable<CarPacking.Models.QuoteRequest>
+
+<link href="~/Content/quotecss.css" rel="stylesheet" />
+
+
+@{
+    ViewBag.Title = "View Quote Requests";
+}
+
+<div class="quote-body mt-5">
+    <div class="quote-container">
+        <h2 class="quote-title">
+            Quote Requests for Stock Order 
+        </h2>
+
+        @foreach (var quoteRequest in Model)
+        {
+            <div class="quote-card">
+                <div class="row">
+                    <div class="col-md-3">
+                        <h5>Supplier</h5>
+                        <p>@quoteRequest.Supplier.Name</p>
+                    </div>
+                    <div class="col-md-3">
+                        <h5>Request Date</h5>
+                        <p>@quoteRequest.RequestDate.ToString("g")</p>
+                    </div>
+                    <div class="col-md-3">
+                        <h5>Status</h5>
+                        <p>@quoteRequest.Status</p>
+                    </div>
+                    <div class="col-md-3 d-flex align-items-center">
+                        <button class="quote-btn-custom mr-2" data-toggle="modal" data-target="#quoteRequestModal"
+                                onclick="showQuoteRequestDetails(@quoteRequest.QuoteRequestId)">
+                            View Requested Products
+                        </button>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<!-- Modal for displaying quote request details -->
+<div class="modal fade" id="quoteRequestModal" tabindex="-1" role="dialog" aria-labelledby="quoteRequestModalLabel" aria-hidden="true" >
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="quote-modal-content">
+            <div class="quote-modal-header">
+                <h5  id="quoteRequestModalLabel">Requested Products</h5>
+                <button type="button" class="quote-close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="quote-modal-body">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Product Name</th>
+                            <th>Quantity</th>
+                        </tr>
+                    </thead>
+                    <tbody id="modalRequestDetails">
+                        <!-- Product details will be dynamically inserted here -->
+                    </tbody>
+                </table>
+            </div>
+            <div class="quote-modal-footer">
+                <button type="button" class="quote-btn-custom" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function showQuoteRequestDetails(quoteRequestId) {
+        $.ajax({
+            url: '@Url.Action("GetQuoteRequestDetails", "Admin")', // The controller action to fetch details
+            type: 'GET',
+            data: { id: quoteRequestId },
+            success: function (data) {
+                var modalBody = $('#modalRequestDetails');
+                modalBody.empty(); // Clear existing content
+
+                data.forEach(function (item) {
+                    modalBody.append('<tr><td>' + item.ProductName + '</td><td>' + item.Quantity + '</td></tr>');
+                });
+            },
+            error: function () {
+                alert('Failed to load the requested products.');
+            }
+        });
+    }
+</script>

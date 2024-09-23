@@ -1,0 +1,77 @@
+﻿@model IEnumerable<CarPacking.Models.MaintenanceTask>
+@{
+    ViewBag.Title = "Track Equipment Maintenance";
+}
+
+<h2>Track Equipment Maintenance</h2>
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Equipment</th>
+            <th>Task</th>
+            <th>Scheduled Date</th>
+            <th>Assigned Personnel</th>
+            <th>Status</th>
+            <th>Progress Updates</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var task in Model)
+        {
+            <tr>
+                <td>@task.Equipment.Name</td>
+                <td>@task.TaskDescription</td>
+                <td>@task.ScheduledDate.ToShortDateString()</td>
+                <td>
+                    @foreach (var personnel in task.AssignedPersonnel)
+                    {
+                        <p>@personnel.PersonnelName</p>
+                    }
+                </td>
+                <td>@(task.IsCompleted ? "Completed" : "In Progress")</td>
+                <td>
+                    @foreach (var update in task.MaintenanceUpdates)
+                    {
+                        <p>@update.UpdateTime.ToShortTimeString() - @update.UpdateDescription</p>
+                    }
+                </td>
+                <td>
+                    @if (!task.IsCompleted)
+                    {
+                        using (Html.BeginForm("ConfirmCompletion", "EquipmentMaintenance", FormMethod.Post))
+                        {
+                            @Html.AntiForgeryToken()
+                            @Html.Hidden("maintenanceTaskId", task.MaintenanceTaskId)
+                            <button type="submit" class="btn btn-success">Mark as Completed</button>
+                        }
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<h3>Add Maintenance Update</h3>
+@using (Html.BeginForm("AddMaintenanceUpdate", "EquipmentMaintenance", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-group">
+        <label for="maintenanceTaskId">Select Task</label>
+        <select id="maintenanceTaskId" name="maintenanceTaskId" class="form-control">
+            @foreach (var task in Model)
+            {
+                <option value="@task.MaintenanceTaskId">@task.TaskDescription (Equipment: @task.Equipment.Name)</option>
+            }
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="updateDescription">Update Description</label>
+        <input type="text" id="updateDescription" name="updateDescription" class="form-control" required />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Add Update</button>
+}

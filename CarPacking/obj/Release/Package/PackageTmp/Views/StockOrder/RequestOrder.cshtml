@@ -1,0 +1,137 @@
+﻿@model CarPacking.Models.StockOrder
+
+@{
+    ViewBag.Title = "Request Order";
+}
+
+<h2 class="text-center mt-4">Request Order</h2>
+
+<div class="container mt-5 order-form-container">
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-group">
+            <label>Supplier Email</label>
+            <p class="form-control-static">@ViewBag.SupplierEmail</p>
+        </div>
+
+        <div id="product-list">
+            @for (int i = 0; i < Model.OrderedProducts.Count; i++)
+            {
+                <div class="form-group product-item">
+                    <label>Product</label>
+                    @Html.DropDownList($"OrderedProducts[{i}].ProductId", (SelectList)ViewBag.SuppliedProducts, "Select a product", new { @class = "form-control" })
+
+                    <label>Quantity</label>
+                    @Html.TextBox($"OrderedProducts[{i}].Quantity", Model.OrderedProducts[i].Quantity, new { @class = "form-control", placeholder = "Enter quantity" })
+
+                    <label>Product Description</label>
+                    @Html.TextArea($"OrderedProducts[{i}].ProductDescription", Model.OrderedProducts[i].ProductDescription, new { @class = "form-control", placeholder = "Enter product description" })
+
+                    <button type="button" class="btn btn-danger mt-2 remove-product">Remove</button>
+                </div>
+            }
+        </div>
+
+        <div class="text-center mt-4">
+            <button type="button" id="add-product" class="btn btn-success">Add Another Product</button>
+        </div>
+
+        <div class="text-center mt-4">
+            <button type="submit" class="btn btn-primary btn-lg">Submit Request</button>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            let productIndex = @Model.OrderedProducts.Count;
+
+            $('#add-product').click(function () {
+                let newProductItem = $('.product-item:first').clone();
+                newProductItem.find('select, input, textarea').each(function () {
+                    let newId = $(this).attr('id').replace(/\d+/, productIndex);
+                    $(this).attr({
+                        id: newId,
+                        name: $(this).attr('name').replace(/\d+/, productIndex)
+                    }).val('');
+                });
+                newProductItem.find('.remove-product').show();
+                $('#product-list').append(newProductItem);
+                productIndex++;
+            });
+
+            $('#product-list').on('click', '.remove-product', function () {
+                $(this).closest('.product-item').remove();
+            });
+
+            if (productIndex <= 1) {
+                $('.remove-product').hide();
+            }
+        });
+    </script>
+}
+
+<!-- Custom Styles -->
+<style>
+    .order-form-container {
+        border: 1px solid #007bff; /* Outline border color */
+        padding: 20px;
+        border-radius: 8px;
+        position: relative;
+        background-color: #f9f9f9; /* Slight background color for better contrast */
+    }
+
+        .order-form-container:before {
+            content: "";
+            position: absolute;
+            top: -5px;
+            left: -5px;
+            right: -5px;
+            bottom: -5px;
+            border: 2px solid #007bff; /* Outline border */
+            border-radius: 10px; /* Rounded corners for the outline */
+            pointer-events: none;
+        }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-control {
+        padding: 10px;
+        font-size: 1rem;
+        border-radius: 5px;
+        border: 1px solid #ced4da;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+        .form-control:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 8px rgba(0, 123, 255, 0.25);
+        }
+
+    .btn-primary {
+        background-color: #007bff;
+        border-color: #007bff;
+        padding: 10px 20px;
+        font-size: 1.25rem;
+        border-radius: 5px;
+        transition: background-color 0.3s ease, border-color 0.3s ease;
+    }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #004085;
+        }
+
+    .product-item {
+        margin-bottom: 20px;
+        padding: 10px;
+        border: 1px solid #ced4da;
+        border-radius: 5px;
+        background-color: #f1f1f1;
+    }
+</style>

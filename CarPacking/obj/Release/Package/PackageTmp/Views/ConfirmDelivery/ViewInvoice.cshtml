@@ -1,0 +1,97 @@
+﻿@model CarPacking.Models.Invoice
+
+@{
+    ViewBag.Title = "Invoice";
+}
+@TempData["Error"]
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-lg">
+                <div class="card-header bg-primary text-white">
+                    <h2 class="mb-0">Invoice #@Model.InvoiceId</h2>
+                </div>
+                <div class="card-body">
+                    <div class="invoice-details mb-4">
+                        <p><strong>Date:</strong> @Model.InvoiceDate.ToShortDateString()</p>
+                        <p><strong>Total Amount:</strong> @Model.TotalAmount.ToString("R0.00")</p>
+                        <p><strong>Status:</strong> <span class="badge badge-@((Model.IsPaid ? "success" : "warning"))">@((Model.IsPaid ? "Paid" : "Unpaid"))</span></p>
+                        <p><strong>Supplier:</strong> @Model.StockOrder.Supplier.Name</p>
+                    </div>
+
+                    <h3 class="text-primary">Delivered Products</h3>
+                    <table class="table table-striped mt-3">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>Product</th>
+                                <th>Quantity Delivered</th>
+                                <th>Price</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.StockOrder.Delivery.DeliveryItems)
+                            {
+                                <tr>
+                                    <td>@item.OrderedProduct.Product.Name</td>
+                                    <td>@item.QuantityDelivered</td>
+                                    <td>@item.OrderedProduct.Product.Price.ToString("R0.00")</td>
+                                    <td>R @(item.QuantityDelivered * item.OrderedProduct.Product.Price)</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                <div class="card-footer text-right">
+                    <a href="@Url.Action("DownloadInvoice", new { id = Model.InvoiceId })" class="btn btn-primary mr-2"><i class="fas fa-download"></i> Download PDF</a>
+
+                    @if (!Model.IsPaid)
+                    {
+                        <a href="@Url.Action("CreatePayment","PayPal", new { total=Model.TotalAmount,InvId = Model.InvoiceId })" class="btn btn-success"><i class="fas fa-check"></i> Settle Invoice</a>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<style>
+    .card {
+        border-radius: 10px;
+        border: none;
+    }
+
+    .card-header {
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        padding: 20px;
+    }
+
+    .card-body {
+        padding: 30px;
+        background-color: #f9f9f9;
+    }
+
+    .invoice-details p {
+        font-size: 16px;
+        margin-bottom: 10px;
+    }
+
+    .table th, .table td {
+        vertical-align: middle;
+    }
+
+    .table thead th {
+        border-bottom: 2px solid #dee2e6;
+    }
+
+    .btn-primary, .btn-success {
+        border-radius: 5px;
+        font-size: 16px;
+        padding: 10px 20px;
+    }
+</style>
+
+<!-- FontAwesome for icons (if not already included) -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">

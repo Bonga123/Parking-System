@@ -1,0 +1,110 @@
+﻿@model IEnumerable<CarPacking.Models.Equipment>
+
+@{
+    ViewBag.Title = "Schedule Equipment Maintenance";
+}
+
+<!-- Custom CSS for Modern Styles -->
+<style>
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f8f9fa;
+        color: #343a40;
+    }
+
+    .container {
+        margin-top: 30px;
+        padding: 20px;
+        background-color: #ffffff;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+        color: #007bff;
+        border-bottom: 2px solid #007bff;
+        padding-bottom: 10px;
+        margin-bottom: 20px;
+    }
+
+    .form-group label {
+        font-weight: 600;
+    }
+
+    .table {
+        margin-top: 20px;
+    }
+
+        .table th {
+            background-color: #007bff;
+            color: #ffffff;
+            text-align: center;
+        }
+
+        .table td {
+            vertical-align: middle;
+        }
+
+    .btn-primary {
+        background-color: #007bff;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+    }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+</style>
+
+<div class="container">
+    <h2>Schedule Equipment Maintenance</h2>
+
+    
+
+    @using (Html.BeginForm("ScheduleMaintenance", "EquipmentMaintenance", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-group">
+            <label for="taskDescription">Task Description</label>
+            <input type="text" id="taskDescription" name="taskDescription" class="form-control" placeholder="Enter the task description" required />
+        </div>
+
+        <div class="form-group">
+            <label for="scheduledDate">Scheduled Date</label>
+            <input type="date" id="scheduledDate" name="scheduledDate" class="form-control" required />
+        </div>
+
+        <div class="form-group">
+            <label for="selectedEquipment">Select Equipment and Specify Quantities</label>
+            <table class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>Equipment</th>
+                        <th>Quantity Available</th>
+                        <th>Quantity Needed</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var equipment in Model)
+                    {
+                        <tr>
+                            <td>
+                                <input type="checkbox" name="SelectedEquipment" value="@equipment.EquipmentId" />
+                                <label>@equipment.Name</label>
+                            </td>
+                            <td class="text-center">@equipment.Quantity</td>
+                            <td>
+                                <input type="number" name="Quantities[@equipment.EquipmentId]" class="form-control" min="0" max="@equipment.Quantity" placeholder="Enter quantity" />
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Schedule Maintenance</button>
+    }
+</div>

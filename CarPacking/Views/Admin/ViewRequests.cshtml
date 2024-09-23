@@ -1,0 +1,148 @@
+﻿@model IEnumerable<CarPacking.Models.StockOrderRequest>
+
+@{
+    ViewBag.Title = "View Stock Order Requests";
+}
+
+<h2 class="mb-4">View Stock Order Requests</h2>
+
+<div class="container">
+    @foreach (var request in Model)
+    {
+        <div class="custom-card">
+            <div class="row">
+                <div class="col-md-3">
+                    <h5>Request ID: @request.StockOrderRequestId</h5>
+                </div>
+                <div class="col-md-3">
+                    <h5>Personnel: @request.Personnel.Name</h5>
+                </div>
+                <div class="col-md-3">
+                    <h5>Date: @request.RequestDate.ToString("g")</h5>
+                </div>
+                <div class="col-md-3 d-flex align-items-center">
+                    <button class="btn btn-custom mr-2" data-toggle="modal" data-target="#requestDetailsModal"
+                            onclick="showRequestDetails(@request.StockOrderRequestId)">
+                        View Details
+                    </button>
+
+                    @using (Html.BeginForm("RequestQuotes", "Admin", FormMethod.Post))
+                    {
+                        @Html.Hidden("requestId", request.StockOrderRequestId)
+                        <button type="submit" class="btn btn-custom">Request Quotes</button>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<!-- Modal for displaying requested products -->
+<div class="modal fade" id="requestDetailsModal" tabindex="-1" role="dialog" aria-labelledby="requestDetailsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5  id="requestDetailsModalLabel">Requested Products</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Product</th>
+                            <th>Quantity</th>
+                        </tr>
+                    </thead>
+                    <tbody id="modalRequestDetails">
+                        <!-- Details will be loaded dynamically here -->
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function showRequestDetails(requestId) {
+        // Make an AJAX call to fetch request details and populate the modal
+        $.ajax({
+            url: '@Url.Action("GetRequestDetails", "Admin")', // Replace with your actual controller/action
+            type: 'GET',
+            data: { requestId: requestId },
+            success: function (data) {
+                // Populate modal with data
+                var modalBody = $('#modalRequestDetails');
+                modalBody.empty(); // Clear existing content
+
+                // Loop through the data and append rows to the table
+                data.forEach(function (item) {
+                    modalBody.append('<tr><td>' + item.ProductName + '</td><td>' + item.Quantity + '</td></tr>');
+                });
+            },
+            error: function () {
+                alert('Error loading request details.');
+            }
+        });
+    }
+</script>
+<style>
+    /* Custom card outline style */
+    .custom-card {
+        border: 2px solid #007bff;
+        border-radius: 10px;
+        padding: 20px;
+        margin-bottom: 20px;
+        box-shadow: 0 4px 8px rgba(0, 123, 255, 0.2);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        font-family: Arial, sans-serif; /* Set a clean, professional font */
+    }
+
+        .custom-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 16px rgba(0, 123, 255, 0.3);
+        }
+
+    /* Modal styles */
+    .modal-content {
+        border-radius: 10px;
+        padding: 20px;
+        font-family: Arial, sans-serif; /* Set a clean, professional font */
+    }
+
+    .modal-header {
+        border-bottom: none;
+        text-align: center;
+    }
+
+        .modal-header h5 {
+            font-size: 1.5rem;
+            margin: 0;
+        }
+
+    .modal-body {
+        padding-top: 0;
+    }
+
+    .modal-footer {
+        border-top: none;
+    }
+
+    /* Custom button styles */
+    .btn-custom {
+        background-color: #007bff;
+        color: #fff;
+        border-radius: 50px;
+        padding: 10px 20px;
+        transition: background-color 0.3s ease;
+        font-family: Arial, sans-serif; /* Set a clean, professional font */
+    }
+
+        .btn-custom:hover {
+            background-color: #0056b3;
+        }
+</style>

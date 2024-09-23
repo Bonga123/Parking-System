@@ -1,0 +1,111 @@
+﻿@model CarPacking.Models.ParkingPermit
+
+@{
+    ViewBag.Title = "Permit Reassigned";
+}
+
+
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card permit-card">
+                <div class="card-body permit-card-body">
+                    <h2 class="card-title permit-card-title text-center mb-4">Permit Reassigned</h2>
+                    <p class="text-center lead mb-5">The permit has been successfully reassigned. Here are the details of the new permit:</p>
+
+                    <table class="table table-hover table-striped table-bordered permit-table">
+                        <tr>
+                            <th>Permit ID</th>
+                            <td>@Model.ParkingPermitId</td>
+                        </tr>
+                        <tr>
+                            <th>Permit Type</th>
+                            <td>@Model.PermitType</td>
+                        </tr>
+                        <tr>
+                            <th>Vehicle ID</th>
+                            <td>@Model.VehicleId</td>
+                        </tr>
+                        <tr>
+                            <th>Issued Date</th>
+                            <td>@Model.IssuedDate.ToString("g")</td>
+                        </tr>
+                        <tr>
+                            <th>QR Code</th>
+                            <td class="text-center">
+                                <img src="@Url.Content(Model.QRCode)" alt="QR Code" class="img-fluid" />
+                            </td>
+                        </tr>
+                    </table>
+
+                    <div class="text-center mt-4">
+                        <a href="@Url.Action("ViewLostReports", "Admin")" class="btn back-button">
+                            <i class="bi bi-arrow-left-circle"></i> Back to Lost Permit Reports
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    /* Custom styles for the Permit Reassigned page */
+    .permit-card {
+        border-radius: 15px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        background-color: #f8f9fa;
+    }
+
+    .permit-card-title {
+        font-size: 2rem;
+        color: #28a745;
+        font-weight: bold;
+    }
+
+    .permit-card-body {
+        padding: 2rem;
+    }
+
+        .permit-card-body p {
+            font-size: 1.2rem;
+            color: #555;
+        }
+
+    .permit-table th {
+        background-color: #007bff;
+        color: #fff;
+        font-weight: 600;
+    }
+
+    .permit-table td {
+        font-size: 1.1rem;
+        color: #333;
+    }
+
+    .permit-table img {
+        max-width: 200px;
+        border-radius: 10px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    }
+
+    .back-button {
+        background-color: #6c757d;
+        color: #fff;
+        border-radius: 50px;
+        padding: 0.75rem 1.5rem;
+        font-size: 1.1rem;
+        transition: background-color 0.3s ease;
+    }
+
+        .back-button:hover {
+            background-color: #5a6268;
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .back-button i {
+            margin-right: 0.5rem;
+        }
+
+</style>

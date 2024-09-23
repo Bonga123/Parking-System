@@ -1,0 +1,177 @@
+﻿@model CarPacking.ViewModels.SubmitQuoteViewModel
+
+<link href="~/Content/quotecss.css" rel="stylesheet" />
+
+
+@{
+    ViewBag.Title = "Submit Quote";
+}
+
+<h2>Submit Quote</h2>
+
+@using (Html.BeginForm("SubmitQuote", "Supplier", FormMethod.Post))
+{
+    @Html.HiddenFor(model => model.QuoteRequestId)
+    @Html.HiddenFor(model => model.SupplierId)
+
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Quantity</th>
+                <th>Unit Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i = 0; i < Model.QuoteItems.Count; i++)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(m => m.QuoteItems[i].ProductName)
+                        @Html.HiddenFor(m => m.QuoteItems[i].ProductId)
+                    </td>
+                    <td>@Html.TextBoxFor(m => m.QuoteItems[i].Quantity, new { @class = "form-control", @readonly = "readonly" })</td>
+                    <td>@Html.TextBoxFor(m => m.QuoteItems[i].UnitPrice, new { @class = "form-control", type = "number", step = "0.01", min = "0", required = "required" })</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <button type="submit" class="btn btn-success">Submit Quote</button>
+}
+
+<p>
+    <a href="@Url.Action("ViewQuoteRequests", "Supplier", new { supplierId = Model.SupplierId })" class="btn btn-secondary">Back to Quote Requests</a>
+</p>
+
+
+
+<style>
+    /* General Styling */
+
+
+    /* Table Container Styling */
+    .table-container {
+        background: #ffffff;
+        border-radius: 12px;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        padding: 20px 30px;
+        max-width: 1000px;
+        margin: auto;
+        margin-top: 40px;
+    }
+
+    /* Header Styling */
+    h2 {
+        font-size: 2.5rem;
+        margin-bottom: 25px;
+        color: #3a3f44;
+        text-align: center;
+        font-weight: 700;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+    }
+
+    /* Table Styling */
+    .table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+        .table thead th {
+            background-color: #4e5d6c;
+            color: #ffffff;
+            text-transform: uppercase;
+            font-weight: 600;
+            padding: 15px;
+            border: none;
+            text-align: center;
+        }
+
+        .table tbody tr {
+            background-color: #f7f9fb;
+            border-bottom: 2px solid #e9ecf3;
+            transition: background-color 0.3s ease;
+        }
+
+            .table tbody tr:hover {
+                background-color: #dfe7ef;
+            }
+
+        .table td {
+            padding: 15px;
+            text-align: center;
+            font-size: 1rem;
+            border: none;
+            color: #2e3d49;
+        }
+
+    /* Input Field Styling */
+    .form-control {
+        border-radius: 8px;
+        padding: 10px 15px;
+        font-size: 1rem;
+        background-color: #f0f4f8;
+        border: 1px solid #d1dae3;
+        color: #495057;
+        transition: background-color 0.3s ease, border-color 0.3s ease;
+    }
+
+        .form-control:focus {
+            background-color: #ffffff;
+            border-color: #7ea0c4;
+            outline: 0;
+            box-shadow: 0 0 8px rgba(126, 160, 196, 0.25);
+        }
+
+    /* Button Styling */
+    .btn {
+        border-radius: 30px;
+        padding: 10px 25px;
+        font-size: 1rem;
+        font-weight: 600;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+
+    .btn-success {
+        background-color: #38a169;
+        border-color: #38a169;
+        color: #ffffff;
+    }
+
+        .btn-success:hover {
+            background-color: #2f855a;
+            border-color: #2f855a;
+        }
+
+    .btn-secondary {
+        background-color: #718096;
+        border-color: #718096;
+        color: #ffffff;
+    }
+
+        .btn-secondary:hover {
+            background-color: #4a5568;
+            border-color: #4a5568;
+        }
+
+
+
+    .table thead th, .table tbody td {
+        font-size: 0.875rem;
+        padding: 12px;
+    }
+
+    h2 {
+        font-size: 2rem;
+    }
+
+    .btn {
+        padding: 8px 20px;
+        font-size: 0.875rem;
+    }
+    }
+</style>

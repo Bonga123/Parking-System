@@ -1,0 +1,45 @@
+﻿@model CarPacking.Models.StockOrderRequest
+
+@{
+    ViewBag.Title = "Request Submitted";
+}
+
+<div class="container mt-5">
+    <h2 class="text-center">Your request has been submitted successfully!</h2>
+    <p class="text-center">Thank you for your submission, @Model.Personnel.Name. We will process your request shortly.</p>
+
+    <div class="card mt-4">
+        <div class="card-header">
+            <h3>Request Details</h3>
+        </div>
+        <div class="card-body">
+            <p><strong>Request ID:</strong> @Model.StockOrderRequestId</p>
+            <p><strong>Submitted by:</strong> @Model.Personnel.Name @Model.Personnel.Surname</p>
+            <p><strong>Request Date:</strong> @Model.RequestDate.ToString("g")</p>
+            <p><strong>Reason:</strong> @Model.Reason</p>
+
+            <h4 class="mt-4">Requested Items</h4>
+            <table class="table table-bordered mt-2">
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Quantity</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.RequestedItems)
+                    {
+                        <tr>
+                            <td>@item.Product.Name</td>
+                            <td>@item.Quantity</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="text-center mt-4">
+        <a href="@Url.Action("Index", "Home")" class="btn btn-primary">Return to Home</a>
+    </div>
+</div>

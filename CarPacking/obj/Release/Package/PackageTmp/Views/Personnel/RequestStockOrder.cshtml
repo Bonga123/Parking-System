@@ -1,0 +1,83 @@
+﻿@model CarPacking.Models.StockOrderRequest
+
+@{
+    ViewBag.Title = "Request Stock Order";
+}
+
+<h2>Request Stock Order</h2>
+
+@using (Html.BeginForm("RequestStockOrder", "Personnel", FormMethod.Post))
+{
+    <div class="form-group">
+        <label for="Reason">Reason</label>
+        @Html.TextAreaFor(m => m.Reason, new { @class = "form-control", rows = 3, required = "required" })
+    </div>
+
+    <div class="form-group">
+        <label for="Products">Select Products</label>
+        <table class="table table-bordered" id="productTable">
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Quantity</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <select name="productIds" class="form-control">
+                            @foreach (var product in ViewBag.Products)
+                            {
+                                <option value="@product.Value">@product.Text</option>
+                            }
+                        </select>
+                    </td>
+                    <td>
+                        <input type="number" name="quantities" class="form-control" min="1" required="required" />
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-danger remove-row">Remove</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <button type="button" class="btn btn-success" id="addRow">Add New</button>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit Request</button>
+}
+
+<p>
+    <a href="@Url.Action("Index", "Home")" class="btn btn-secondary">Back to Home</a>
+</p>
+
+@section Scripts {
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            // Get the HTML for the dropdown options
+            var productOptionsHtml = $('select[name="productIds"]').html();
+
+            // Function to generate a new row
+            function generateRow() {
+                var newRow = '<tr>' +
+                    '<td><select name="productIds" class="form-control">' + productOptionsHtml + '</select></td>' +
+                    '<td><input type="number" name="quantities" class="form-control" min="1" required="required"></td>' +
+                    '<td><button type="button" class="btn btn-danger remove-row">Remove</button></td>' +
+                    '</tr>';
+                return newRow;
+            }
+
+            // Add new row
+            $('#addRow').click(function () {
+                $('#productTable tbody').append(generateRow());
+            });
+
+            // Remove row
+            $(document).on('click', '.remove-row', function () {
+                $(this).closest('tr').remove();
+            });
+        });
+    </script>
+}

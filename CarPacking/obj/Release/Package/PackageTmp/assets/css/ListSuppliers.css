@@ -1,0 +1,46 @@
+﻿
+.card {
+    border: 2px solid #007bff; /* Primary color border */
+    border-radius: 10px;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+    transform: scale(1.02);
+    box-shadow: 0 4px 20px rgba(0, 123, 255, 0.3);
+}
+
+.card-title {
+    font-size: 1.5rem;
+}
+
+.card-body {
+    padding: 20px;
+}
+
+.list-group-item {
+    background-color: #f8f9fa;
+    border: none;
+}
+
+    .list-group-item strong {
+        color: #343a40;
+    }
+
+.btn-outline-secondary {
+    color: #6c757d;
+    border-color: #6c757d;
+}
+
+    .btn-outline-secondary:hover {
+        color: #fff;
+        background-color: #6c757d;
+    }
+
+@media (max-width: 768px) {
+    .card-title {
+        font-size: 1.25rem;
+    }
+}
+
+

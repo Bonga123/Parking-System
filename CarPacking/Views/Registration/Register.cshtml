@@ -1,0 +1,114 @@
+﻿<!-- File: Views/Registration/Register.cshtml -->
+@model CarPacking.Models.User
+
+@{
+    ViewBag.Title = "Register User and Vehicle";
+    Layout = "~/Views/Shared/_Layout.cshtml"; // Assuming you have a shared layout
+}
+
+<style>
+    .register-container {
+        max-width: 600px;
+        margin: 50px auto;
+        padding: 20px;
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        transition: transform 0.3s ease-in-out;
+    }
+
+        .register-container:hover {
+            transform: scale(1.02);
+        }
+
+    h2 {
+        text-align: center;
+        color: #343a40;
+    }
+
+    label {
+        font-weight: bold;
+        color: #495057;
+    }
+
+    input[type="text"] {
+        width: 100%;
+        padding: 10px;
+        margin: 10px 0;
+        border: 1px solid #ced4da;
+        border-radius: 4px;
+        transition: border-color 0.3s ease-in-out;
+    }
+
+        input[type="text"]:focus {
+            border-color: #007bff;
+            outline: none;
+        }
+
+    button {
+        display: block;
+        width: 100%;
+        padding: 10px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color 0.3s ease-in-out;
+    }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+</style>
+
+<div class="register-container">
+    <h2>Register User and Vehicle</h2>
+
+    @using (Html.BeginForm())
+    {
+        <div>
+            <label>Full Name:</label>
+            @Html.TextBoxFor(m => m.FullName)
+        </div>
+        <div>
+            <label>Email:</label>
+            @Html.TextBoxFor(m => m.Email)
+        </div>
+
+        <h3>Vehicle Information</h3>
+        <div id="vehicles">
+            @for (int i = 0; i < Model.Vehicles.Count; i++)
+            {
+                <div>
+                    <label>License Plate:</label>
+                    @Html.TextBoxFor(m => m.Vehicles[i].LicensePlate)
+                    <label>Make:</label>
+                    @Html.TextBoxFor(m => m.Vehicles[i].Make)
+                    <label>Model:</label>
+                    @Html.TextBoxFor(m => m.Vehicles[i].Model)
+                </div>
+            }
+        </div>
+
+        <button type="button" onclick="addVehicle()">Add Another Vehicle</button>
+        <button type="submit">Register</button>
+    }
+</div>
+
+<script>
+    function addVehicle() {
+        var vehicleSection = document.getElementById('vehicles');
+        var newVehicle = document.createElement('div');
+        newVehicle.innerHTML = `
+        <label>License Plate:</label>
+        <input type="text" name="Vehicles[].LicensePlate" />
+        <label>Make:</label>
+        <input type="text" name="Vehicles[].Make" />
+        <label>Model:</label>
+        <input type="text" name="Vehicles[].Model" />
+    `;
+        vehicleSection.appendChild(newVehicle);
+    }
+</script>

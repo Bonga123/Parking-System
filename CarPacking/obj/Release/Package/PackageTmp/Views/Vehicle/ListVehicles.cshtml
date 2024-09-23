@@ -1,0 +1,83 @@
+﻿<!-- File: Views/Vehicle/ListVehicles.cshtml -->
+@model IEnumerable<CarPacking.Models.Vehicle>
+
+@{
+    ViewBag.Title = "Vehicle List";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .vehicle-list-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+        margin: 50px auto;
+        padding: 20px;
+        gap: 20px;
+    }
+
+    .vehicle-card {
+        background-color: #f8f9fa;
+        border-radius: 10px;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+        overflow: hidden;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        width: 300px;
+    }
+
+        .vehicle-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+        }
+
+        .vehicle-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+    .vehicle-card-body {
+        padding: 20px;
+        text-align: center;
+    }
+
+    .vehicle-card-title {
+        font-size: 1.5em;
+        margin-bottom: 10px;
+        color: #343a40;
+    }
+
+    .vehicle-card-text {
+        font-size: 1em;
+        color: #6c757d;
+        margin-bottom: 15px;
+    }
+
+    .vehicle-card-button {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        padding: 10px 20px;
+        text-decoration: none;
+        transition: background-color 0.3s ease;
+    }
+
+        .vehicle-card-button:hover {
+            background-color: #0056b3;
+        }
+</style>
+
+<div class="vehicle-list-container">
+    @foreach (var vehicle in Model)
+    {
+        <div class="vehicle-card">
+            <img src="@(!string.IsNullOrEmpty(vehicle.PicturePath) ? vehicle.PicturePath : "/Content/Images/default-vehicle.png")" alt="Vehicle Image">
+            <div class="vehicle-card-body">
+                <h5 class="vehicle-card-title">@vehicle.Make @vehicle.Model</h5>
+                <p class="vehicle-card-text">License Plate: @vehicle.LicensePlate</p>
+                <a href="@Url.Action("IssuePermit", "ParkingPermit", new { vehicleId = vehicle.VehicleId })" class="vehicle-card-button">Assign Permit</a>
+            </div>
+        </div>
+    }
+</div>

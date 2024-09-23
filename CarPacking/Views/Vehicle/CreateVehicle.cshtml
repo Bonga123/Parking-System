@@ -1,0 +1,84 @@
+﻿<!-- File: Views/Vehicle/CreateVehicle.cshtml -->
+@model CarPacking.Models.Vehicle
+
+@{
+    ViewBag.Title = "Create Vehicle";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .vehicle-container {
+        max-width: 600px;
+        margin: 50px auto;
+        padding: 20px;
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+        .vehicle-container h2 {
+            text-align: center;
+            color: #343a40;
+        }
+
+    label {
+        font-weight: bold;
+        color: #495057;
+    }
+
+    input[type="text"], input[type="file"] {
+        width: 100%;
+        padding: 10px;
+        margin: 10px 0;
+        border: 1px solid #ced4da;
+        border-radius: 4px;
+        transition: border-color 0.3s ease-in-out;
+    }
+
+        input[type="text"]:focus, input[type="file"]:focus {
+            border-color: #007bff;
+            outline: none;
+        }
+
+    button {
+        display: block;
+        width: 100%;
+        padding: 10px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color 0.3s ease-in-out;
+    }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+</style>
+
+<div class="vehicle-container">
+    <h2>Create New Vehicle</h2>
+
+    @using (Html.BeginForm("CreateVehicle", "Vehicle", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        <div>
+            <label>License Plate:</label>
+            @Html.TextBoxFor(m => m.LicensePlate)
+        </div>
+        <div>
+            <label>Make:</label>
+            @Html.TextBoxFor(m => m.Make)
+        </div>
+        <div>
+            <label>Model:</label>
+            @Html.TextBoxFor(m => m.Model)
+        </div>
+        <div>
+            <label>Vehicle Picture:</label>
+            <input type="file" name="vehicleImage" />
+        </div>
+        <button type="submit">Create Vehicle</button>
+    }
+</div>

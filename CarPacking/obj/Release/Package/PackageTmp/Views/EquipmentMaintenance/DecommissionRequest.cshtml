@@ -1,0 +1,20 @@
+﻿@model CarPacking.Models.DecommissionRequest
+@{
+    ViewBag.Title = "Decommission Equipment Request";
+}
+
+<h2>Decommission Equipment Request</h2>
+
+@using (Html.BeginForm("SubmitDecommissionRequest", "EquipmentMaintenance", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    @Html.HiddenFor(model => model.EquipmentId)
+
+    <div class="form-group">
+        <label for="reason">Reason for Decommission</label>
+        <textarea id="reason" name="reason" class="form-control" required></textarea>
+    </div>
+
+    <button type="submit" class="btn btn-danger">Submit Decommission Request</button>
+}

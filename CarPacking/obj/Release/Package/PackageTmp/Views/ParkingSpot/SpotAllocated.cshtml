@@ -1,0 +1,51 @@
+﻿<!-- File: Views/ParkingSpot/SpotAllocated.cshtml -->
+@model CarPacking.Models.ParkingSpot
+
+@{
+    ViewBag.Title = "Parking Spot Allocated";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .allocated-container {
+        max-width: 500px;
+        margin: 50px auto;
+        padding: 20px;
+        background-color: #e9ecef;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        text-align: center;
+    }
+
+        .allocated-container h2 {
+            color: #343a40;
+        }
+
+        .allocated-container p {
+            font-size: 18px;
+            color: #495057;
+            margin: 20px 0;
+        }
+
+        .allocated-container button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease-in-out;
+        }
+
+            .allocated-container button:hover {
+                background-color: #0056b3;
+            }
+</style>
+
+<div class="allocated-container">
+    <h2>Parking Spot Allocated</h2>
+
+    <p>Your parking spot has been allocated. Location: @Model.Location</p>
+    <button onclick="location.href='@Url.Action("Index", "Home")'">Go to Dashboard</button>
+</div>
